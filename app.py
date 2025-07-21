@@ -8,6 +8,9 @@ class CalculatorApp:
         self.root = root
         self.root.geometry(WINDOW)
         self.root.title(TITLE)
+
+        self.expression = ''
+
         self.create_widgets()
         self.setup_widgets()
 
@@ -20,6 +23,9 @@ class CalculatorApp:
                    ('1', '2', '3', '-', '4'),
                    ('0', '.', '=', '+', '4')
                    )
+
+        button = tk.Button(root, text='C', command=lambda: self.bt_clear())
+        button.grid(row=1, column=3, sticky="nsew")
 
         for row in range(4):
             for col in range(4):
@@ -35,7 +41,21 @@ class CalculatorApp:
 
         self.input_field.pack(fill=tk.BOTH)
 
-    def btn_click(self):
+    def btn_click(self, item):
+        try:
+            self.input_field['state'] = 'normal'
+            self.expression += item
+            self.input_field.insert(tk.END, item)
+
+            if item == '=':
+                result = str(eval(self.expression[:-1]))
+                self.input_field.insert(tk.END, result)
+                self.expression = ''
+            self.input_field['state'] = 'readonly'
+        except:
+            pass
+
+    def bt_clear(self):
         pass
 
 
